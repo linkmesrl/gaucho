@@ -4,7 +4,9 @@
   "description": "A graphical task runner powered by Yerbamate",
   "main": "main.js",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "electron": "~1.4.0",
+    "google-spreadsheet": "^2.0.3",
     "jquery": "^3.1.1",
     "materialize-css": "~0.97.8",
     "vue": "^2.0.8",
