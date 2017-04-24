@@ -85,6 +85,10 @@
     margin-bottom: 0;
 }
 
+nav .brand-logo {
+    position:relative;
+}
+
 @media (max-width: 280px) {
     .brand-logo.main-logo>a {
         display: none !important;
@@ -175,3 +179,8 @@ input.tab-text {
 .menu-button.disabled:hover {
     background-color: #ababab;
 }
+
+
+/*
+background-linkme: background-color: rgba(255,255,255,.89);
+*/

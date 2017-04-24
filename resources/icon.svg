@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="26px" viewBox="0 0 32 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Logo Closed</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Desktop-V3-HD-CLIENTI-Menu-open" sketch:type="MSArtboardGroup" transform="translate(-35.000000, -40.000000)" fill="#D63649">
+            <g id="Menu-closed-Copy" sketch:type="MSLayerGroup">
+                <g id="Logo-Closed" transform="translate(35.000000, 40.000000)" sketch:type="MSShapeGroup">
+                    <path d="M25.4065011,13.158061 C20.1029643,18.5593787 19.1167236,23.5206638 19,26 L25.3817527,26 C26.060301,19.9182924 30.2438822,15.1193603 31.7764337,13.5484547 C32.0745221,13.2431563 32.0745221,12.7575901 31.7764337,12.4522917 C30.2438822,10.8813861 26.060301,6.0824541 25.3817527,0 L19,0 C19.1167236,2.47933623 20.1025949,7.4409945 25.4065011,12.8430587 C25.4914581,12.929647 25.4914581,13.0710994 25.4065011,13.158061" id="Fill-1"></path>
+                    <path d="M6.59349894,13.158061 C11.8970357,18.5593787 12.8832764,23.5206638 13,26 L6.6182473,26 C5.93969896,19.9182924 1.75611783,15.1193603 0.22356635,13.5484547 C-0.0745221165,13.2431563 -0.0745221165,12.7575901 0.22356635,12.4522917 C1.75611783,10.8813861 5.93969896,6.0824541 6.6182473,0 L13,0 C12.8832764,2.47933623 11.8974051,7.4409945 6.59349894,12.8430587 C6.5081725,12.929647 6.5081725,13.0710994 6.59349894,13.158061" id="Fill-2"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

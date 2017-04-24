@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32px" height="26px" viewBox="0 0 32 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Logo small white</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Mobile-Portrait-Home" sketch:type="MSArtboardGroup" transform="translate(-20.000000, -30.000000)" fill="#FFFFFF">
+            <path d="M33,30 L26.6179777,30 C25.9397066,36.0826076 21.7559961,40.8816158 20.2234943,42.4524134 C19.9255019,42.7578462 19.9255019,43.2436733 20.2234943,43.5488891 C21.7559961,45.1196867 25.9397066,49.9182607 26.6179777,56 L33,56 C32.8833382,53.5207187 31.8969769,48.5595511 26.5934852,43.1583605 C26.508191,43.0713111 26.508191,42.9299914 26.5934852,42.843159 C31.8974066,37.4413172 32.8835531,32.4797155 33,30 L33,30 Z M45.406356,43.1583605 C40.1029958,48.5595511 39.1166589,53.5207187 39,56 L45.3818641,56 C46.0603333,49.9182607 50.2437252,45.1196867 51.776189,43.5488891 C52.0746037,43.2436733 52.0746037,42.7578462 51.776189,42.4524134 C50.2437252,40.8816158 46.0603333,36.0826076 45.3818641,30 L39,30 C39.1166589,32.4797155 40.1025661,37.4413172 45.406356,42.843159 C45.491648,42.9299914 45.491648,43.0713111 45.406356,43.1583605 L45.406356,43.1583605 Z" id="Logo-small-white" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
