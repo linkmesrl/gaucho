@@ -25,13 +25,14 @@ module.exports = {
             <div class="nav-wrapper">
                 <window-frame-top></window-frame-top>
                 <div class="brand-logo main-logo left">
-                <img class="logo-icon" src="resources/logos/gaucho_logo.png"></img>
-                <a>Gaucho</a>
+                <img class="logo-icon" src="resources/logos/logo_small_white.svg"></img>
+                <a>LinkMe</a>
                 </div>
-                <ul class="right">
+                <!--Elimino sezioni modifica + menu-->
+                <!--<ul class="right">
                     <li><a v-on:click="toggleEdit" v-bind:class="{'edit-button-active': editMode}"><i class="material-icons unselectable-text">mode_edit</i></a></li>
                     <li><a class="navbar-menu-button" href='#' data-activates='navbar-menu'><i class="material-icons small unselectable-text">menu</i></a></li>
-                </ul>
+                </ul>-->
                 <navbar-menu v-on:selection="onMenuSelection" v-bind:suites="suites"></navbar-menu>
             
                 <div class="row tabs-row">

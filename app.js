@@ -10,6 +10,12 @@ const components = {
     "navbar": require('./app/renderer/components/navbar')
 };
 
+
+var mainWindow = null;
+
+var client = require('electron-connect').client;
+client.create(mainWindow);
+
 let suites = [];
 
 ipcRenderer.on('before-close', () => {

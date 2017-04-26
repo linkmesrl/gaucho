@@ -5,7 +5,9 @@ const path = require('path');
 const MainWindow = require('./app/main/main_window');
 const AppEvents = require('./app/main/app_events');
 const UserConfig = require('./app/main/user_config');
-
+//system tray icon
+const {app, Menu, Tray} = require('electron')
+let tray = null
 
 function isDevEnv() {
     return process.env.NODE_ENV === "dev";
@@ -27,11 +29,40 @@ function initApp() {
                 .setIndex(htmlUrl)
                 .setUserConfig(config)
                 .initWindow(isDevEnv());
+
+                win.on('minimize',function(event){
+                  event.preventDefault()
+                  win.hide();
+                  });
+
+                win.on('close', function (event) {
+                  if( !app.isQuiting){
+                    event.preventDefault()
+                    win.hide();
+                  }
+                  return false;
+                  });
             });
         }
     }
     AppEvents(createWindow);
 
 }
+
+app.on('ready', () => {
+  tray = new Tray('resources/icon.png')
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show App', click:  function(){
+        win.show();
+    } },
+    { label: 'Quit', click:  function(){
+        app.isQuiting = true;
+        app.quit();
+
+    } }
+]);
+  tray.setToolTip('LinkMe Task Runner')
+  tray.setContextMenu(contextMenu)
+})
 
 initApp();

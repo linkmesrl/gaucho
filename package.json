@@ -13,6 +13,7 @@
     "yerbamate": "^1.1.4"
   },
   "devDependencies": {
+    "electron-connect": "^0.6.1",
     "electron-packager": "^8.3.0"
   },
   "scripts": {

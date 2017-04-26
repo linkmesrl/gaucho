@@ -4,6 +4,7 @@ const AppStatus = require('../app_status');
 const TaskInput = require('./task_input');
 const TaskStatus = require('../../common/task_status');
 
+
 const Material = require('../materialize');
 const Utils = require('../../common/utils');
 
@@ -80,6 +81,9 @@ module.exports = {
             this.task.run(this.print, () => {});
         },
         stop() {
+            var myNotification = new Notification('Task Completato.', {
+              body: 'Timer stoppato.'
+            })
             this.task.stop();
         },
         removeListeners() {
