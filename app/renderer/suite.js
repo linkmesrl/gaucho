@@ -11,6 +11,8 @@ class Suite {
     }
 
     addTask(task) {
+        task.id = this.tasks.length;
+        task.creationDate = new Date();
         this.tasks.push(task);
     }
 

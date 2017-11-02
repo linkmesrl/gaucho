@@ -5,6 +5,7 @@ const EventEmitter = require('events');
 const TaskCard = require('./task_card');
 const AddTask = require('./add_task');
 const AppStatus = require('../app_status');
+const TaskConfig = require('../task_config');
 
 module.exports = {
     props: ['suite', 'index'],
@@ -20,8 +21,8 @@ module.exports = {
                 <template v-for="(task,i) in suite.tasks">
                     <task-card v-bind:task="task" v-on:remove="removeTask(i)" v-on:edit="editTask(i, $event)" v-bind:event="event"></task-card>
                 </template>
-                <add-task v-on:add="addTask" v-if="showAddTab"></add-task>
             </ul>
+            <add-task v-on:add="addTask"></add-task>
         </div>
     `,
     mounted() {
@@ -37,6 +38,7 @@ module.exports = {
             if (this.suite.length < AppStatus.maxTasksPerSuite) {
                 this.suite.addTask(task);
             }
+            TaskConfig.saveConfig();
         },
         removeTask: function(i) {
             this.suite.removeTask(i);

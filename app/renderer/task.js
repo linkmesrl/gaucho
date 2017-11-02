@@ -7,20 +7,19 @@ const yerbamate = require('yerbamate');
 const TaskStatus = require('../common/task_status');
 const TaskTimer = require('../common/timer');
 
-
 const TaskEvents = new EventEmitter();
 TaskTimer(TaskEvents);
 
 class Task {
-    constructor(title, path, command) {
-        this.title = title || "";
-        this.path = path || "";
-        this.command = command || "";
+    constructor(task) {
+        this.title = task.title || "";
+        this.description = task.description || "";
+        this.id = task.id || null;        
+        this.creationDate = task.creationDate || null;
         this.status = TaskStatus.idle;
-
         this.beginTime = null;
         this.finishTime = null;
-        this.elapsedTime = null;
+        this.elapsedTime = task.elapsedTime || null;
         this.onTimeUpdate = null;
     }
 
@@ -29,19 +28,14 @@ class Task {
             throw new Error("Trying to run task without stopping it first");
         }
         this.status = TaskStatus.running;
-        this.beginTime = Date.now();
+        this.beginTime = Date.now() - (this.elapsedTime * 1000);
         this.finishTime = null;
-        this.proc = yerbamate.run(this.command, this.path, {
-                stderr: stdout,
-                stdout: stdout
-            },
-            (code) => {
-                if (this.status !== TaskStatus.stopped) this.status = yerbamate.successCode(code) ? TaskStatus.ok : TaskStatus.error;
-                this.finishTime = Date.now();
-                this.updateElapsedTime();
-                TaskEvents.removeListener("time-update", this.onTimeUpdate);
-                done();
-            });
+        this.proc = setInterval(() => {
+            this.finishTime = Date.now();
+            this.updateElapsedTime();
+            TaskEvents.removeListener("time-update", this.onTimeUpdate);
+            done();
+        }, 1000);
         this.onTimeUpdate = () => {
             this.updateElapsedTime();
         };
@@ -51,7 +45,7 @@ class Task {
 
     stop(cb) {
         if (this.isRunning()) {
-            yerbamate.stop(this.proc, cb);
+            clearInterval(this.proc);
         } else if (cb) cb();
         this.status = TaskStatus.stopped;
     }
@@ -63,9 +57,11 @@ class Task {
     toJSON() {
         let res = {
             title: this.title,
-            command: this.command,
+            description: this.description,
+            elapsedTime: this.elapsedTime,
+            creationDate: this.creationDate,
+            id: this.id
         };
-        if (this.path !== ".") res.path = this.path;
         return res;
     }
 

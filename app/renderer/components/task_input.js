@@ -8,8 +8,7 @@ module.exports = {
     data() {
         return {
             title: "",
-            command: "",
-            path: "",
+            description: ""
         };
     },
     template: `
@@ -19,15 +18,11 @@ module.exports = {
             <label for="title">Task Title</label>
         </div>
         <div class="input-field">
-            <textarea id="command" class="materialize-textarea" v-model="command" v-on:keydown.9="onCommandTabPressed"></textarea>
-            <label>Command</label>
-        </div>
-        <div class="input-field">
-            <input id="path" type="text" v-model="path">
-            <label for="path">Path</label>
+            <textarea id="description" class="materialize-textarea" v-model="description"></textarea>
+            <label>Task description</label>
         </div>
         <div class="row task-input-send-row">
-        <button class="btn waves-effect waves-light save-task-button" v-on:click="saveTask">Save
+        <button class="btn waves-effect waves-light save-task-button" :disabled="title.length == 0" v-on:click="saveTask">Save
             <i class="material-icons right">send</i>
         </button>   
         </div> 
@@ -43,13 +38,13 @@ module.exports = {
     },
     methods: {
         saveTask() {
-            if (this.title && this.command) {
-                this.$emit('save', new Task(this.title, this.path, this.command));
+            if (this.title && this.description) {
+                this.$emit('save', new Task(this));
                 this.clear();
             }
         },
         clear() {
-            this.title = this.command = this.path = "";
+            this.title = this.description = "";
             this.$nextTick(() => {
                 Material.updateInput();
             });
@@ -57,24 +52,11 @@ module.exports = {
         onTaskUpdate() {
             if (this.task) {
                 this.title = this.task.title;
-                this.command = this.task.command;
-                this.path = this.task.path;
+                this.description = this.task.description;
                 this.$nextTick(() => {
                     Material.updateInput();
                 });
             }
-        },
-        onCommandTabPressed(ev) {
-            ev.preventDefault();
-            const target = ev.target;
-            const selection = target.selectionStart;
-
-            let value = this.command;
-            this.command = target.value = value.substring(0, selection) +
-                "    " +
-                value.substring(selection, value.length);
-
-            target.selectionStart = target.selectionEnd = selection + 4;
         }
     }
 };

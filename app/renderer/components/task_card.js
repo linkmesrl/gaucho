@@ -3,6 +3,7 @@
 const AppStatus = require('../app_status');
 const TaskInput = require('./task_input');
 const TaskStatus = require('../../common/task_status');
+const TaskConfig = require('../task_config');
 
 const Material = require('../materialize');
 const Utils = require('../../common/utils');
@@ -81,6 +82,7 @@ module.exports = {
         },
         stop() {
             this.task.stop();
+            TaskConfig.saveConfig();
         },
         removeListeners() {
             this.event.removeListener("run", this.run);
@@ -127,7 +129,7 @@ module.exports = {
             return this.task.isRunning();
         },
         executionTime: function() {
-            if (this.task.beginTime === null) return "-";
+            // if (this.task.beginTime === null) return "-";
             return Utils.generateTimeString(this.task.elapsedTime);
         }
     },

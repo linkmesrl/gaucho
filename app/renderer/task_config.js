@@ -10,7 +10,7 @@ function parseData(data) {
     return data.suites.map((suite) => {
         let result = new Suite(suite.title);
         result.tasks = suite.tasks.map((task) => {
-            return new Task(task.title, task.path, task.command);
+            return new Task(task);
         });
         return result;
     });
@@ -22,25 +22,20 @@ const defaultConfig = `{
     "suites": [{
         "title": "My Project",
         "tasks": [{
-            "title": "Install",
-            "command": "npm install"
-        }, {
-            "title": "Test",
-            "command": "npm test"
-        }, {
-            "title": "Another awesome task",
-            "command": "echo 'The result of my awesome task'"
-
-        }, {
             "title": "Start",
-            "command": "npm start"
-
+            "description": "test description",
+            "elapsedTime": 0,            
+            "id": 0,
+            "creationDate": "Tue Oct 31 2017 15:11:59 GMT+0100 (CET)"
         }]
     }, {
         "title": "Suite 2",
         "tasks": [{
-            "title": "Hello World 2",
-            "command": "echo 'hello world'"
+            "title": "HourGlass",
+            "description": "echo 'hello world'",
+            "elapsedTime": 0,
+            "id": 1,
+            "creationDate": "Tue Oct 31 2017 15:11:59 GMT+0100 (CET)"
         }]
     }]
 }`;
