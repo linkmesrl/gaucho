@@ -9,12 +9,15 @@ const REQUEST_TOKEN_URL = 'https://trello.com/1/OAuthGetRequestToken?oauth_callb
 
 
 //Checks if the access token is in local storage, if not, makes a request for it
-function checkToken() {
+function checkToken(redirectRequired) {
   const { getCurrentWindow } = require('electron').remote;
-  localStorage.clear()
   if (localStorage.getItem('token')) {
+    console.log("token ", localStorage.getItem('token'))
     getCurrentWindow().loadURL(`file://${__dirname}/content.html`)
-  } else {
+  } else {    
+    if(redirectRequired){
+      getCurrentWindow().loadURL(`file://${__dirname}/index.html`);
+    }
     //the request module provides a way to make OAuth requests easily
     const oauth = { consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET };
     request.post({ url: REQUEST_TOKEN_URL, oauth: oauth }, (e, r, body) => {
@@ -50,4 +53,6 @@ function storeToken(urlQuery, targetWindow) {
       });
     });
 }
+
+
 module.exports = { checkToken: checkToken, storeToken: storeToken };

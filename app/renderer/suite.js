@@ -1,8 +1,9 @@
 "use strict";
 
 class Suite {
-    constructor(title) {
-        this.title = title || "";
+    constructor(suite) {
+        this.title = suite.name || "";
+        this.id = suite.id;
         this.tasks = [];
     }
     
@@ -11,7 +12,6 @@ class Suite {
     }
 
     addTask(task) {
-        task.id = this.tasks.length;
         task.creationDate = new Date();
         this.tasks.push(task);
     }

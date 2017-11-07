@@ -8,6 +8,8 @@ const NavbarMenu = require('./navbar_menu');
 const WindowFrameTop = require('./window_frame_top');
 const TaskConfig = require('../task_config');
 
+const TrelloApi = require('../../common/trello.js');
+
 module.exports = {
     props: ['suites'],
     components: {
@@ -27,11 +29,12 @@ module.exports = {
                     <window-frame-top></window-frame-top>
                     <div class="brand-logo main-logo left">
                     <img class="logo-icon" src="resources/logos/gaucho_logo.png"></img>
-                    <a>Gaucho</a>
+                    <a>LinkMe</a>
                     </div>
                     <ul class="right">
                         <li><a v-on:click="toggleEdit" v-bind:class="{'edit-button-active': editMode}"><i class="material-icons unselectable-text">mode_edit</i></a></li>
                         <li><a href="#addTaskModal" v-on:click="openAddTaskModal"><i class="material-icons unselectable-text">add</i></a></li>
+                        <li><a v-on:click="logoutTrello"><i class="material-icons unselectable-text">power_settings_new</i></a></li>
                     </ul>
                     <navbar-menu v-on:selection="onMenuSelection" v-bind:suites="suites"></navbar-menu>
                 
@@ -60,7 +63,6 @@ module.exports = {
                 this.suites.push(new Suite("Suite " + (this.suites.length + 1)));
                 this.selectTab(this.suites.length - 1);
             }
-            TaskConfig.saveConfig();
         },
         deleteSuite() {
             if (this.suites.length > 1) {
@@ -97,6 +99,9 @@ module.exports = {
                 default:
                     this.AppStatus.events.emit(selection);
             }
+        },
+        logoutTrello() {
+            TrelloApi.methods.trelloLogout();
         }
     },
     computed: {

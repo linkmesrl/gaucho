@@ -12,8 +12,10 @@ TaskTimer(TaskEvents);
 
 class Task {
     constructor(task) {
-        this.title = task.title || "";
+        this.title = task.name || "";
         this.description = task.description || "";
+        this.url = task.url,
+        this.idBoard = task.idBoard,
         this.id = task.id || null;        
         this.creationDate = task.creationDate || null;
         this.status = TaskStatus.idle;

@@ -7,8 +7,8 @@ const Suite = require('./suite');
 const Task = require('./task');
 
 function parseData(data) {
-    return data.suites.map((suite) => {
-        let result = new Suite(suite.title);
+    return data.map((suite) => {
+        let result = new Suite(suite);
         result.tasks = suite.tasks.map((task) => {
             return new Task(task);
         });
@@ -42,30 +42,11 @@ const defaultConfig = `{
 
 module.exports = {
     suites: [],
-    loadConfig: function(done) {
-        fs.readFile(path.join(__dirname, configFile), 'utf8', (err, data) => {
-            if (err) {
-                console.warn("tasks.json file not found");
-                data=defaultConfig;
-            }
-            try {
-                this.suites = parseData(JSON.parse(data));
-                return done(null, this.suites);
-            } catch (e) {
-                done(e);
-            }
-        });
+    loadConfig: function (suites, done) {
+        this.suites = parseData(suites);
+        return done(this.suites);
     },
-    saveConfig: function(done) {
-        let data = {
-            suites: this.suites.map((suite) => {
-                return suite.toJSON();
-            })
-        };
-
-        fs.writeFile(path.join(__dirname, configFile), JSON.stringify(data), (err) => {
-            if (err) console.error("Error on saveConfig:" + err);
-            if (done) done(err);
-        });
+    saveConfig: function (done) {
+        console.log("save to google sheet");
     }
 };
