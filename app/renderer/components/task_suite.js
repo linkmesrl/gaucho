@@ -34,17 +34,17 @@ module.exports = {
         AppStatus.events.removeListener("stop-suite", this.onStopSuite);
     },
     methods: {
-        addTask: function(task) {
+        addTask: function (task) {
             if (this.suite.length < AppStatus.maxTasksPerSuite) {
                 this.suite.addTask(task);
             }
             TaskConfig.saveConfig();
         },
-        removeTask: function(i) {
+        removeTask: function (i) {
             this.suite.removeTask(i);
             this.$forceUpdate();
         },
-        editTask: function(i, task) {
+        editTask: function (i, task) {
             this.suite.replaceTask(i, task);
             this.$forceUpdate();
         },
@@ -60,10 +60,10 @@ module.exports = {
         }
     },
     computed: {
-        id: function() {
+        id: function () {
             return "tab" + this.index;
         },
-        showAddTab: function() {
+        showAddTab: function () {
             return AppStatus.editMode && this.suite.length < AppStatus.maxTasksPerSuite;
         }
 

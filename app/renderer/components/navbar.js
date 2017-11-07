@@ -31,7 +31,7 @@ module.exports = {
                     </div>
                     <ul class="right">
                         <li><a v-on:click="toggleEdit" v-bind:class="{'edit-button-active': editMode}"><i class="material-icons unselectable-text">mode_edit</i></a></li>
-                        <li><a href="#addTaskModal" v-on:click="openAddTaskModal"><i class="material-icons unselectable-text">add</i></a></li>                    
+                        <li><a href="#addTaskModal" v-on:click="openAddTaskModal"><i class="material-icons unselectable-text">add</i></a></li>
                     </ul>
                     <navbar-menu v-on:selection="onMenuSelection" v-bind:suites="suites"></navbar-menu>
                 

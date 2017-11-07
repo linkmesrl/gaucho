@@ -1,5 +1,4 @@
 "use strict";
-
 const AppStatus = require('../app_status');
 const TaskInput = require('./task_input');
 const TaskStatus = require('../../common/task_status');

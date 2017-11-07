@@ -3,31 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Gaucho Task Runner</title>
-    <link href="./resources/material_icons/material-icons.css" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="./resources/styles.css" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello Login</title>
 </head>
 
-<body>
-
-    <div id="app">
-        <navbar v-bind:suites="suites" v-if="loaded"></navbar>
-        <template v-for="(suite,index) in suites">
-            <task-suite v-bind:suite="suite" v-bind:index="index"></task-suite>
-        </template>
+<body style="margin: 0">
+    <div id="login">
+        <webview v-if="TrelloConfig.authMode" id="webview" src="data:text/html,<h3>Checking token status...</h3>" style="position:absolute;width:100%;height:100%;"></webview>
     </div>
-
-
-    <script>
-        window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
-        window.Hammer = require('./node_modules/materialize-css/js/hammer.min.js');
-    </script>
-    <script src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
-    <script src="./node_modules/vue/dist/vue.min.js"></script>
-    <script type="text/javascript" src="./app.js"></script>
+    <script>require('./trello_auth').checkToken();</script>
 </body>
 
 </html>
