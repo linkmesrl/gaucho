@@ -1,8 +1,6 @@
 const request = require('request');
 const querystring = require('querystring');
 
-const TrelloApi = require('./app/common/trello');
-
 const CONSUMER_KEY = 'e2667b0fdf2c31c8f23e3d58d48ca1a3';
 const CONSUMER_SECRET = '3b6b2ab0d8d2dfcbf97a06124e078e6ced090b4d57515f09e133a7c3c47f6615';
 const ACCESS_TOKEN_URL = 'https://trello.com/1/OAuthGetAccessToken';
@@ -13,8 +11,9 @@ const REQUEST_TOKEN_URL = 'https://trello.com/1/OAuthGetRequestToken?oauth_callb
 //Checks if the access token is in local storage, if not, makes a request for it
 function checkToken() {
   const { getCurrentWindow } = require('electron').remote;
+  localStorage.clear()
   if (localStorage.getItem('token')) {
-    getCurrentWindow().loadURL(`file://${__dirname}/content.html`);
+    getCurrentWindow().loadURL(`file://${__dirname}/content.html`)
   } else {
     //the request module provides a way to make OAuth requests easily
     const oauth = { consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET };
@@ -42,15 +41,12 @@ function storeToken(urlQuery, targetWindow) {
       };
       request.post({ url: ACCESS_TOKEN_URL, oauth: oauth }, (e, r, body) => {
         const token_data = querystring.parse(body);
-        targetWindow.loadURL(`file://${__dirname}/content.html`);
-        targetWindow.webContents.on('did-finish-load', () => {
-          targetWindow.webContents.executeJavaScript(
-            `localStorage.setItem('token', "${token_data.oauth_token}");
-             localStorage.setItem('token_secret', "${token_data.oauth_token_secret}");`
-            , false).then(function () {
-                TrelloApi.methods.getTrelloMemberByToken(token_data);
-            });
-        });
+        targetWindow.webContents.executeJavaScript(
+          `localStorage.setItem('token', "${token_data.oauth_token}");
+           localStorage.setItem('token_secret', "${token_data.oauth_token_secret}");`, false)
+          .then((result) => {
+            targetWindow.loadURL(`file://${__dirname}/content.html`);
+          })
       });
     });
 }

@@ -8,8 +8,8 @@ const consumerKey = 'e2667b0fdf2c31c8f23e3d58d48ca1a3';
 
 module.exports = {
     methods: {
-        getTrelloMemberByToken(tokenData) {
-            let trelloToken = tokenData.oauth_token;
+        getTrelloMemberByToken() {
+            let trelloToken = localStorage.getItem('token');
             let params = {
                 token: trelloToken,
                 key: consumerKey

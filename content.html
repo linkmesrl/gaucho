@@ -28,6 +28,10 @@
     <script src="./node_modules/vue/dist/vue.min.js"></script>
     <!-- <script src="./node_modules/axios/dist/axios.min.js"></script> -->
     <script type="text/javascript" src="./app.js"></script>
+    <script>
+        let TrelloApi = require('./app/common/trello');
+        TrelloApi.methods.getTrelloMemberByToken();
+    </script>
 </body>
 
 </html>
