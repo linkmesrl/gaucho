@@ -12,9 +12,6 @@ const REQUEST_TOKEN_URL = 'https://trello.com/1/OAuthGetRequestToken?oauth_callb
 
 //Checks if the access token is in local storage, if not, makes a request for it
 function checkToken() {
-  localStorage.clear();
-  localStorage.removeItem('token');
-  localStorage.removeItem('token_secret');
   const { getCurrentWindow } = require('electron').remote;
   if (localStorage.getItem('token')) {
     getCurrentWindow().loadURL(`file://${__dirname}/content.html`);
