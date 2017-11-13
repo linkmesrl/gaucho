@@ -6,22 +6,27 @@ const yerbamate = require('yerbamate');
 
 const TaskStatus = require('../common/task_status');
 const TaskTimer = require('../common/timer');
+const AppStatus = require('./app_status');
 
 const TaskEvents = new EventEmitter();
 TaskTimer(TaskEvents);
 
 class Task {
     constructor(task) {
-        this.title = task.name || "";
-        this.description = task.description || "";
-        this.url = task.url,
-        this.idBoard = task.idBoard,
+        this.name = task.name || "";
+        this.desc = task.desc || "";
+        this.url = task.url;
+        this.due = task.due || "-";
+        this.dateLastActivity = task.dateLastActivity;
+        this.labels = task.labels;
+        this.idBoard = task.idBoard;
         this.id = task.id || null;        
         this.creationDate = task.creationDate || null;
         this.status = TaskStatus.idle;
         this.beginTime = null;
         this.finishTime = null;
-        this.elapsedTime = task.elapsedTime || null;
+        this.savedElapsedTimes = task.savedElapsedTimes || [0,0,0,0,0,0,0];
+        this.elapsedTime = task.elapsedTime || 0;        
         this.onTimeUpdate = null;
     }
 
@@ -50,6 +55,7 @@ class Task {
             clearInterval(this.proc);
         } else if (cb) cb();
         this.status = TaskStatus.stopped;
+        this.savedElapsedTimes[AppStatus.activeDay] = this.elapsedTime;
     }
 
     isRunning() {
@@ -58,10 +64,12 @@ class Task {
 
     toJSON() {
         let res = {
-            title: this.title,
-            description: this.description,
+            name: this.name,
+            desc: this.desc,
             elapsedTime: this.elapsedTime,
             creationDate: this.creationDate,
+            savedElapsedTimes: this.savedElapsedTimes,
+            day: AppStatus.weekDays[AppStatus.activeDay],
             id: this.id
         };
         return res;

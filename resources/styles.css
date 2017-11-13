@@ -1,14 +1,20 @@
+.cursor {
+    cursor: pointer;
+}
+
 .run-output {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 200px;
+    min-height: 200px;
     background-color: #eeeeee;
+    padding: 10px;
 }
 
-.run-output pre {
-    margin: 0 0 0 10px;
+.run-output span {
+    margin: 0 5px;
     overflow: hidden;
     white-space: pre-wrap;
+    line-height: 2.5;
 }
 
 .run-button {
@@ -62,7 +68,7 @@
 }
 
 .suite-tab {
-    margin-top: 72px;
+    margin-top: 123px;
     /*47 px + 25px*/
 }
 
@@ -79,6 +85,10 @@
 
 .edit-button-active:hover {
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+.edit-task-timer{
+    width: 35px!important;
 }
 
 .tabs-row {
@@ -174,4 +184,12 @@ input.tab-text {
 
 .menu-button.disabled:hover {
     background-color: #ababab;
+}
+
+
+/*Trello Card*/
+.trello-label {
+    padding: 2px 15px;
+    border-radius: 10px;
+    margin: 0 5px;
 }

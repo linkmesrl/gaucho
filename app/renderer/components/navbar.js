@@ -21,6 +21,8 @@ module.exports = {
             AppStatus: AppStatus
         };
     },
+    // <li><a href="#addTaskModal" v-on:click="openAddTaskModal"><i class="material-icons unselectable-text">add</i></a></li>
+    // <li><a v-on:click="toggleEdit" v-bind:class="{'edit-button-active': editMode}"><i class="material-icons unselectable-text">mode_edit</i></a></li>
     template: `
     <div>
         <div class="navbar-fixed">
@@ -32,23 +34,29 @@ module.exports = {
                     <a>LinkMe</a>
                     </div>
                     <ul class="right">
-                        <li><a v-on:click="toggleEdit" v-bind:class="{'edit-button-active': editMode}"><i class="material-icons unselectable-text">mode_edit</i></a></li>
-                        <li><a href="#addTaskModal" v-on:click="openAddTaskModal"><i class="material-icons unselectable-text">add</i></a></li>
+                        <li><a v-on:click="sendWeekReport"><i class="material-icons unselectable-text">send</i></a></li>
                         <li><a v-on:click="logoutTrello"><i class="material-icons unselectable-text">power_settings_new</i></a></li>
                     </ul>
                     <navbar-menu v-on:selection="onMenuSelection" v-bind:suites="suites"></navbar-menu>
-                
                     <div class="row tabs-row">
                         <ul id="navbar-tabs" class="tabs tabs-transparent">
                             <template v-for="(suite,index) in suites">
                             <li class="tab col s3 unselectable-text">
                                 <a draggable="false" v-on:click="onTabSelected(index)" v-bind:href="'#tab'+index" v-bind:class="{ active: index===0 }">
-                                    <template v-if="editMode && index===AppStatus.activeSuite">
-                                        <input id="suite-title-input" type="text" class="validate tab-text" v-model="suite.title">
-                                    </template>
-                                    <span class="tab-text" v-show="!editMode || index!==AppStatus.activeSuite">{{suite.title}}</span>
+                                    <span class="tab-text">{{suite.title}}</span>
                                 </a>
                             </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="row tabs-row">
+                        <ul id="week-days-tabs" class="tabs">
+                            <template v-for="(day,index) in AppStatus.weekDays">
+                                <li class="tab col s3 unselectable-text">
+                                    <a draggable="false" v-on:click="onDaySelected(index)" v-bind:class="{ active: index===AppStatus.activeDay }">
+                                        <span class="tab-text">{{day}}</span>
+                                    </a>
+                                </li>
                             </template>
                         </ul>
                     </div>
@@ -87,6 +95,7 @@ module.exports = {
         },
         openAddTaskModal() {
             $('#addTaskModal').modal();
+            $('#listSelect').material_select();
         },
         onMenuSelection(selection) {
             switch (selection) {
@@ -102,6 +111,15 @@ module.exports = {
         },
         logoutTrello() {
             TrelloApi.methods.trelloLogout();
+        },
+        sendWeekReport() {
+            console.log("send report")
+        },
+        onDaySelected(index) {
+            this.suites[AppStatus.activeSuite].tasks.forEach((value) => {
+                value.elapsedTime = value.savedElapsedTimes[index];
+            });
+            AppStatus.activeDay = index;
         }
     },
     computed: {

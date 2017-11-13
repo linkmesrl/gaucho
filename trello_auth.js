@@ -12,7 +12,6 @@ const REQUEST_TOKEN_URL = 'https://trello.com/1/OAuthGetRequestToken?oauth_callb
 function checkToken(redirectRequired) {
   const { getCurrentWindow } = require('electron').remote;
   if (localStorage.getItem('token')) {
-    console.log("token ", localStorage.getItem('token'))
     getCurrentWindow().loadURL(`file://${__dirname}/content.html`)
   } else {    
     if(redirectRequired){

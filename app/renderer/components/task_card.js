@@ -14,22 +14,27 @@ module.exports = {
     props: ['task', 'event'],
     data: () => {
         return {
-            output: "",
-            AppStatus: AppStatus
+            output: ""
         };
     },
+    // IDEA FOR EDIT 
+    // <webview id="webview" v-bind:src="task.url" style="position:relative;width:100%;height:500px;"></webview>
     template: `
     <li class="run-card">
         <div class="collapsible-header row unselectable-text">
             <div class="col s5">
-                <strong class="truncate">{{task.title}}</strong>     
+                <strong class="truncate">{{task.name}}</strong>     
             </div>
             <div class="col s3">
-                <div class="truncate task-time">{{executionTime}}</div>
+                <div v-if="!task.editTimer" class="truncate task-time">{{executionTime}}</div>
+                <div v-else="task.editTimer" class="truncate task-time">
+                    <input class="edit-task-timer" type="number" v-model="task.executionTimeEditFirst"> : <input class="edit-task-timer" type="number" v-model="task.executionTimeEditSecond">
+                </div>
             </div>
             <div class="col s3">
-                <a v-if="AppStatus.editMode" class="waves-effect waves-light btn delete-button" v-on:click="onDeleteClick">Delete</a>
-                <a v-else class="waves-effect waves-light btn run-button" v-on:click="toggleRun">{{running? "Stop" : "Run"}}</a>
+                <a v-if="task.editTimer" class="waves-effect waves-light btn save-button" v-on:click="editTimer">Save</a>
+                <a v-if="!task.editTimer" class="waves-effect waves-light btn run-button col s9" v-on:click="toggleRun">{{running? "Stop" : "Run"}}</a>
+                <a v-if="!task.editTimer && !running" v-on:click="toggleTimerEdit" class="edit-button col s3"><i class="material-icons unselectable-text">mode_edit</i></a>                
             </div>
             <div class="col s1">
                 <div class="badge">
@@ -37,18 +42,18 @@ module.exports = {
                 </div>
             </div>
         </div>
-
-    <div class="collapsible-body">
-        <div v-if="!AppStatus.editMode" class="run-output">
-            <pre>{{output}}</pre>
+        <div v-if="!task.editTimer" class="collapsible-body">
+            <div class="run-output">
+                <span><b>Description: </b> {{task.desc}}</span><br>
+                <span><b>Date last activity: </b> {{task.dateLastActivity}}</span><br>
+                <span><b>Due: </b> {{task.due}}</span><br>
+                <span><b>Labels: </b> <span v-for="(label, i) in task.labels" class="trello-label" v-bind:style="{ 'background-color': label.color }">{{label.name}}</span></span><br>
+                <span><b>Url: </b> <a class="cursor" v-on:click="openTaskUrl(task.url)">Open task link</a></span>
+            </div>
         </div>
-        <div v-else class="container">
-            <task-input v-bind:task="task" v-on:save="saveTask"></task-input>
-        </div>
-    </div>
   </li>
   `,
-    mounted: function() {
+    mounted: function () {
         this.event.on("run", this.run);
         this.event.on("stop", this.stop);
     },
@@ -56,7 +61,7 @@ module.exports = {
         this.removeListeners();
     },
     methods: {
-        toggleRun: function(ev) {
+        toggleRun: function (ev) {
             ev.stopPropagation();
             if (this.running) this.stop();
             else this.run();
@@ -70,14 +75,31 @@ module.exports = {
             this.stop();
             this.$emit('remove');
         },
-        saveTask(task) {
-            this.stop();
-            this.collapseTask();
-            this.$emit('edit', task);
+        toggleTimerEdit(ev) {
+            ev.stopPropagation();
+            this.task.editTimer = true;
+            if(!this.task.executionTimeEditFirst && !this.task.executionTimeEditSecond) {
+                let time = Utils.generateTimeString(this.task.elapsedTime);
+                this.task.executionTimeEditFirst = time.substring(0, time.indexOf(':'));
+                this.task.executionTimeEditSecond = time.substring(time.indexOf(':') + 1);
+            }
+            this.$forceUpdate();
+        },
+        editTimer(ev) {
+            ev.stopPropagation();
+            if(this.task.executionTimeEditFirst && this.task.executionTimeEditSecond) {
+                let time = Utils.generateTimeString(this.task.elapsedTime);
+                this.task.elapsedTime = Number(this.task.executionTimeEditFirst * 60) + Number(this.task.executionTimeEditSecond);
+                delete this.task.executionTimeEditFirst;
+                delete this.task.executionTimeEditSecond;
+            }
+            delete this.task.editTimer;
+            this.$forceUpdate();            
+            this.$emit('edit', this.task);
         },
         run() {
             this.output = "";
-            this.task.run(this.print, () => {});
+            this.task.run(this.print, () => { });
         },
         stop() {
             this.task.stop();
@@ -106,10 +128,16 @@ module.exports = {
                 elements[0].classList.remove("active");
                 Material.updateCollapsible();
             }
+        },
+        openTaskUrl(url) {
+            const remote = require('electron').remote;
+            const BrowserWindow = remote.BrowserWindow;
+            var win = new BrowserWindow({ width: 800, height: 600 });
+            win.loadURL(url);
         }
     },
     computed: {
-        statusColor: function() {
+        statusColor: function () {
             switch (this.task.status) {
                 case TaskStatus.idle:
                 case TaskStatus.stopped:
@@ -124,10 +152,10 @@ module.exports = {
                     return "grey";
             }
         },
-        running: function() {
+        running: function () {
             return this.task.isRunning();
         },
-        executionTime: function() {
+        executionTime: function () {
             // if (this.task.beginTime === null) return "-";
             return Utils.generateTimeString(this.task.elapsedTime);
         }

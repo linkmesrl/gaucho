@@ -4,7 +4,8 @@ class Suite {
     constructor(suite) {
         this.title = suite.name || "";
         this.id = suite.id;
-        this.tasks = [];
+        this.tasks = suite.tasks || [];
+        this.lists = suite.lists || [];
     }
     
     get length(){
@@ -46,7 +47,7 @@ class Suite {
 
     toJSON() {
         return {
-            title: this.title,
+            name: this.name,
             tasks: this.tasks.map((task) => {
                 return task.toJSON();
             })

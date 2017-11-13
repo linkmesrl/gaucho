@@ -18,6 +18,7 @@
         <template v-for="(suite,index) in suites">
             <task-suite v-bind:suite="suite" v-bind:index="index"></task-suite>
         </template>
+        <add-task v-if="loaded"></add-task>
     </div>
 
     <script>

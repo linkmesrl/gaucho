@@ -22,18 +22,18 @@ const defaultConfig = `{
     "suites": [{
         "title": "My Project",
         "tasks": [{
-            "title": "Start",
-            "description": "test description",
-            "elapsedTime": 0,            
+            "name": "Start",
+            "desc": "test description",
+            "elapsedTime": [0,0,0,0,0,0,0],            
             "id": 0,
             "creationDate": "Tue Oct 31 2017 15:11:59 GMT+0100 (CET)"
         }]
     }, {
         "title": "Suite 2",
         "tasks": [{
-            "title": "HourGlass",
-            "description": "echo 'hello world'",
-            "elapsedTime": 0,
+            "name": "HourGlass",
+            "desc": "echo 'hello world'",
+            "elapsedTime": [0,0,0,0,0,0,0],
             "id": 1,
             "creationDate": "Tue Oct 31 2017 15:11:59 GMT+0100 (CET)"
         }]
@@ -47,6 +47,5 @@ module.exports = {
         return done(this.suites);
     },
     saveConfig: function (done) {
-        console.log("save to google sheet");
     }
 };

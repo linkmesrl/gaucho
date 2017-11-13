@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angrykoala/gaucho.git"
+    "url": "git+https://github.com/linkmesrl/hourglass.git"
   },
   "keywords": [
     "electron",
@@ -38,10 +38,10 @@
     "gui",
     "graphical"
   ],
-  "author": "angrykoala <demiurgosoft@hotmail.com>",
+  "author": "linkmesrl<linkme@link-me.it>",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/angrykoala/gaucho/issues"
+    "url": "https://github.com/linkmesrl/hourglass/issues"
   },
-  "homepage": "https://github.com/angrykoala/gaucho#readme"
+  "homepage": "https://github.com/linkmesrl/hourglass#readme"
 }
