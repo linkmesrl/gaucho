@@ -10,7 +10,11 @@
     <div id="login">
         <webview v-if="TrelloConfig.authMode" id="webview" src="data:text/html,<h3>Loading...</h3>" style="position:absolute;width:100%;height:100%;"></webview>
     </div>
-    <script>require('./trello_auth').checkToken();</script>
+    <script>
+        require('./google_sheets_auth').init().then(res => {
+            require('./trello_auth').checkToken();
+        });
+    </script>
 </body>
 
 </html>

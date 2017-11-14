@@ -18,9 +18,18 @@ module.exports = {
                 .then(response => {
                     this.getTrelloActionsByMemberId(response.data.idMember);
                     this.getTrelloBoardByMemberId(response.data.idMember);
+                    this.getTrelloMemberData(response.data.idMember);
                 }, response => {
                     console.error(response);
                 });
+        },
+        getTrelloMemberData(memberId) {
+            axios.get('https://api.trello.com/1/members/' + memberId).then(response => {
+                localStorage.setItem('userFullName', response.data.fullName);
+                localStorage.setItem('userTrelloId', response.data.id);                
+            }, response => {
+                console.error(response);
+            })
         },
         getTrelloActionsByMemberId(memberId) {
             axios.get('https://api.trello.com/1/members/' + memberId + '/actions', { params: params })

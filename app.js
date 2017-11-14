@@ -9,8 +9,7 @@ const Task = require('./app/renderer/task');
 
 const components = {
     "task-suite": require('./app/renderer/components/task_suite'),
-    "navbar": require('./app/renderer/components/navbar'),
-    "add-task": require('./app/renderer/components/add_task')
+    "navbar": require('./app/renderer/components/navbar')
 };
 
 let suites = [];
@@ -20,9 +19,7 @@ ipcRenderer.on('before-close', () => {
         return s.stopAll();
     });
     promises.push(new Promise((resolve) => {
-        TaskConfig.saveConfig(() => {
-            resolve();
-        });
+        //some code
     }));
     Promise.all(promises).then(() => {
         ipcRenderer.send("close-app");

@@ -1,13 +1,18 @@
 "use strict";
 const AppStatus = require('../app_status');
-const TaskInput = require('./task_input');
 const TaskStatus = require('../../common/task_status');
 const TaskConfig = require('../task_config');
 
 const Material = require('../materialize');
 const Utils = require('../../common/utils');
+const GoogleApis = require('../../../google_sheets_auth');
+
+console.log(GoogleApis)
 
 const config = AppStatus.config;
+
+let userFullName = localStorage.getItem("userFullName");
+console.log(userFullName)
 
 
 module.exports = {
@@ -17,8 +22,6 @@ module.exports = {
             output: ""
         };
     },
-    // IDEA FOR EDIT 
-    // <webview id="webview" v-bind:src="task.url" style="position:relative;width:100%;height:500px;"></webview>
     template: `
     <li class="run-card">
         <div class="collapsible-header row unselectable-text">
@@ -66,15 +69,6 @@ module.exports = {
             if (this.running) this.stop();
             else this.run();
         },
-        onDeleteClick(ev) {
-            ev.stopPropagation();
-            this.deleteTask();
-
-        },
-        deleteTask() {
-            this.stop();
-            this.$emit('remove');
-        },
         toggleTimerEdit(ev) {
             ev.stopPropagation();
             this.task.editTimer = true;
@@ -99,20 +93,19 @@ module.exports = {
         },
         run() {
             this.output = "";
-            this.task.run(this.print, () => { });
+            this.task.run(() => { });
         },
         stop() {
             this.task.stop();
-            TaskConfig.saveConfig();
+            var params = {
+                range: app.suites[AppStatus.activeSuite].title + '' + "!A1",
+                values: [[userFullName, this.task.elapsedTime, this.task.name]]
+            }
+            GoogleApis.append(params);
         },
         removeListeners() {
             this.event.removeListener("run", this.run);
             this.event.removeListener("stop", this.stop);
-        },
-        print(out) {
-            this.output += "\n" + out;
-            this.output = this.output.slice(-config.outputMaxSize).trim();
-            this.autoScroll();
         },
         autoScroll() {
             let container = this.$el.querySelector(".run-output");
@@ -156,11 +149,7 @@ module.exports = {
             return this.task.isRunning();
         },
         executionTime: function () {
-            // if (this.task.beginTime === null) return "-";
             return Utils.generateTimeString(this.task.elapsedTime);
         }
-    },
-    components: {
-        "task-input": TaskInput
     }
 };

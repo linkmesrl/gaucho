@@ -30,12 +30,12 @@ class Task {
         this.onTimeUpdate = null;
     }
 
-    run(stdout, done) {
+    run(done) {
         if (this.isRunning()) {
             throw new Error("Trying to run task without stopping it first");
         }
         this.status = TaskStatus.running;
-        this.beginTime = Date.now() - (this.elapsedTime * 1000);
+        this.beginTime = Date.now();
         this.finishTime = null;
         this.proc = setInterval(() => {
             this.finishTime = Date.now();

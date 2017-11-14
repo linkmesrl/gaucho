@@ -5,7 +5,6 @@ const EventEmitter = require('events');
 const TaskCard = require('./task_card');
 const AppStatus = require('../app_status');
 const TaskConfig = require('../task_config');
-const AddTask = require('./add_task');
 
 module.exports = {
     props: ['suite', 'index'],
@@ -33,10 +32,6 @@ module.exports = {
         AppStatus.events.removeListener("stop-suite", this.onStopSuite);
     },
     methods: {
-        removeTask: function (i) {
-            this.suite.removeTask(i);
-            this.$forceUpdate();
-        },
         editTask: function (i, task) {
             this.suite.replaceTask(i, task);
             this.$forceUpdate();
@@ -55,14 +50,9 @@ module.exports = {
     computed: {
         id: function () {
             return "tab" + this.index;
-        },
-        showAddTab: function () {
-            return AppStatus.editMode && this.suite.length < AppStatus.maxTasksPerSuite;
         }
-
     },
     components: {
-        "task-card": TaskCard,
-        "add-task": AddTask
+        "task-card": TaskCard
     }
 };
