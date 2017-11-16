@@ -1,18 +1,13 @@
 "use strict";
 const AppStatus = require('../app_status');
 const TaskStatus = require('../../common/task_status');
-const TaskConfig = require('../task_config');
-
 const Material = require('../materialize');
 const Utils = require('../../common/utils');
-const GoogleApis = require('../../../google_sheets_auth');
-
-console.log(GoogleApis)
+const GoogleApis = require('../../common/google_sheets');
 
 const config = AppStatus.config;
 
 let userFullName = localStorage.getItem("userFullName");
-console.log(userFullName)
 
 
 module.exports = {

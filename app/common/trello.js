@@ -1,7 +1,8 @@
 "use strict";
 
 const axios = require('axios');
-const consumerKey = 'e2667b0fdf2c31c8f23e3d58d48ca1a3';
+const remote = require('electron').remote;
+const consumerKey = remote.getGlobal('keysConfig').customer_key;
 const trelloToken = localStorage.getItem('token') || null;
 const TrelloAuth = require('../../trello_auth');
 

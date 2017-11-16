@@ -1,7 +1,7 @@
 "use strict";
 
 const ipcRenderer = require('electron').ipcRenderer;
-
+const remote = require('electron').remote;
 const Material = require('./app/renderer/materialize');
 const axios = require('axios');
 const Suite = require('./app/renderer/suite');
@@ -30,7 +30,8 @@ const app = new Vue({ // jshint ignore:line
     el: '#app',
     data: {
         suites: suites,
-        loaded: false
+        loaded: false,
+        notAllowed: false
     },
     methods: {
         BoardsWithCardsReceived: function (suites) {
@@ -46,10 +47,17 @@ const app = new Vue({ // jshint ignore:line
                 });
                 return result;
             });
+        },
+        quit: function() {
+            ipcRenderer.send("close-app");
         }
     },
     components: components,
     mounted() {
+        if(!require('electron').remote.getGlobal('keysConfig')) {
+            this.notAllowed = true;
+        }
+        // ipcRenderer.send("close-app");
         Material.init();
     },
     updated() {

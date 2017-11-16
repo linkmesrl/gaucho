@@ -5,11 +5,7 @@ const Material = require('../materialize');
 const AppStatus = require('../app_status');
 
 const WindowFrameTop = require('./window_frame_top');
-const TaskConfig = require('../task_config');
-
 const TrelloApi = require('../../common/trello');
-const GoogleApi = require('../../../google_sheets_auth');
-GoogleApi.init();
 
 module.exports = {
     props: ['suites'],
@@ -28,8 +24,7 @@ module.exports = {
                 <div class="nav-wrapper">
                     <window-frame-top></window-frame-top>
                     <div class="brand-logo main-logo left">
-                    <img class="logo-icon" src="resources/logos/gaucho_logo.png"></img>
-                    <a>LinkMe</a>
+                    <img class="logo-icon" src="resources/logos/lm_logo.svg"></img>
                     </div>
                     <ul class="right">
                         <li><a v-on:click="logoutTrello"><i class="material-icons unselectable-text">power_settings_new</i></a></li>

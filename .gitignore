@@ -38,6 +38,6 @@ jspm_packages
 
 
 # Custom
-tasks.json
+keys.json
 config.json
 builds

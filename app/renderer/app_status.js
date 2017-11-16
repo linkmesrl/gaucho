@@ -3,8 +3,6 @@
 const remote = require('electron').remote;
 const EventEmitter = require('events');
 
-const TaskConfig = require('./task_config');
-
 module.exports = {
     activeSuite: 0,
     events: new EventEmitter(),

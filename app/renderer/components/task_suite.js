@@ -4,7 +4,6 @@ const EventEmitter = require('events');
 
 const TaskCard = require('./task_card');
 const AppStatus = require('../app_status');
-const TaskConfig = require('../task_config');
 
 module.exports = {
     props: ['suite', 'index'],

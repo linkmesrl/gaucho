@@ -129,7 +129,7 @@ input.tab-text {
 }
 
 .logo-icon {
-    height: 40px;
+    height: 70px;
 }
 
 .brand-logo.main-logo>a {
@@ -186,10 +186,24 @@ input.tab-text {
     background-color: #ababab;
 }
 
+/* Trello Card */
 
-/*Trello Card*/
 .trello-label {
     padding: 2px 15px;
     border-radius: 10px;
     margin: 0 5px;
+}
+
+/* Not Allowed Container */
+
+.not-allowed-container{
+    height: calc(100vh - 40px);
+    display: flex;
+    align-items: center;
+}
+.not-allowed-container .content{
+    padding: 0 10%;
+}
+.not-allowed-container .content div{
+    margin-bottom: 20px;
 }
