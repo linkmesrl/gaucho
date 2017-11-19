@@ -13,11 +13,9 @@ const jwtClient = promisifyAll(new google.auth.JWT(
 ));
 
 const sheetsClient = promisifyAll(sheets.spreadsheets);
-let _this;
 
 module.exports = {
   init() {
-    _this = this;
     return jwtClient.authorizeAsync();
   },
   // GET RANGE PARAMS EXAMPLE
@@ -113,7 +111,7 @@ module.exports = {
       if (err) {
         console.log(err);
         let sheetTitle = params.range.substring(0, params.range.indexOf('!'));
-        _this.addSheet(sheetTitle, params);
+        this.addSheet(sheetTitle, params);
       }
     });
   },
@@ -154,8 +152,8 @@ module.exports = {
           range: sheetName + '' + "!A1:C2",
           values: [["Nome Operatore", "Tempo in Sec", "Nome della card"], oldReq.values[0]]
         }
-        _this.append(params);
-        _this.batchUpdate(response.replies[0].addSheet.properties.sheetId);
+        this.append(params);
+        this.batchUpdate(response.replies[0].addSheet.properties.sheetId);
       }
     });
   }
