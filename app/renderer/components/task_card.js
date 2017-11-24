@@ -7,9 +7,6 @@ const GoogleApis = require('../../common/google_sheets');
 
 const config = AppStatus.config;
 
-let userFullName = localStorage.getItem("userFullName");
-
-
 module.exports = {
     props: ['task', 'event'],
     data: () => {
@@ -92,6 +89,7 @@ module.exports = {
         },
         stop() {
             this.task.stop();
+            let userFullName = localStorage.getItem("userFullName");
             var params = {
                 range: app.suites[AppStatus.activeSuite].title + '' + "!A1",
                 values: [[userFullName, this.task.elapsedTime, this.task.name]]
