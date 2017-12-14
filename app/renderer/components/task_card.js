@@ -72,6 +72,7 @@ module.exports = {
             this.$forceUpdate();
         },
         editTimer(ev) {
+            let userFullName = localStorage.getItem("userFullName");
             ev.stopPropagation();
             if(this.task.executionTimeEditFirst && this.task.executionTimeEditSecond) {
                 let time = Utils.generateTimeString(this.task.elapsedTime);
@@ -80,7 +81,12 @@ module.exports = {
                 delete this.task.executionTimeEditSecond;
             }
             delete this.task.editTimer;
-            this.$forceUpdate();            
+            var params = {
+                range: app.suites[AppStatus.activeSuite].title + '' + "!A1",
+                values: [[userFullName, this.task.elapsedTime, new Date(), new Date(), this.task.name, this.task.url]]
+            };
+            GoogleApis.append(params);
+            this.$forceUpdate();     
             this.$emit('edit', this.task);
         },
         run() {
@@ -92,7 +98,7 @@ module.exports = {
             let userFullName = localStorage.getItem("userFullName");
             var params = {
                 range: app.suites[AppStatus.activeSuite].title + '' + "!A1",
-                values: [[userFullName, this.task.elapsedTime, this.task.name]]
+                values: [[userFullName, this.task.elapsedTime, new Date(this.task.beginTime), new Date(this.task.finishTime), this.task.name, this.task.url]]
             }
             GoogleApis.append(params);
         },

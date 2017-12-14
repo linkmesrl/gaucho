@@ -1,7 +1,8 @@
 "use strict";
 
 const {
-    remote
+    remote,
+    ipcRenderer
 } = require('electron');
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
     `,
     methods: {
         onClose() {
-            this.win.close();
+            ipcRenderer.send('close-app');
         },
         onMaximize() {
             // TODO: dont update window size in config when maximizing

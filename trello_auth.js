@@ -13,11 +13,11 @@ function checkToken(redirectRequired) {
       getCurrentWindow().loadURL(`file://${__dirname}/index.html`);
     }
     //the request module provides a way to make OAuth requests easily
-    let oauth = { consumer_key: GlobalKeys.customer_key, consumer_secret: GlobalKeys.customer_secret };
+    let oauth = { consumer_key: GlobalKeys.customer_key, consumer_secret: GlobalKeys.customer_secret};
     request.post({ url: GlobalKeys.request_token_url, oauth: oauth }, (e, r, body) => {
       let req_data = querystring.parse(body);
       localStorage.setItem('token_secret', req_data.oauth_token_secret);
-      document.getElementById('webview').setAttribute("src", GlobalKeys.authorize_token_url + req_data.oauth_token);
+      document.getElementById('webview').setAttribute("src", GlobalKeys.authorize_token_url + req_data.oauth_token + "&name=" + GlobalKeys.appName);
     });
   }
 }

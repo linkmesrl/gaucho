@@ -57,7 +57,6 @@ const app = new Vue({ // jshint ignore:line
         if(!require('electron').remote.getGlobal('keysConfig')) {
             this.notAllowed = true;
         }
-        // ipcRenderer.send("close-app");
         Material.init();
     },
     updated() {

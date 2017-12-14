@@ -33,7 +33,7 @@ module.exports = {
   },
   // BATCHUPDATE PARAMS EXAMPLE
   // sheetId = id of the target sheet
-  batchUpdate(sheetId) {
+  batchUpdate(sheetId, sheetName) {
     let params = {};
     params.resource = {
       requests: [
@@ -64,7 +64,7 @@ module.exports = {
               endIndex: 2
             },
             properties: {
-              pixelSize: 180
+              pixelSize: 150
             },
             fields: "pixelSize"
           }
@@ -74,12 +74,54 @@ module.exports = {
               sheetId: sheetId,
               dimension: "COLUMNS",
               startIndex: 2,
-              endIndex: 3
+              endIndex: 4
+            },
+            properties: {
+              pixelSize: 250
+            },
+            fields: "pixelSize"
+          }
+        }, {
+          updateDimensionProperties: {
+            range: {
+              sheetId: sheetId,
+              dimension: "COLUMNS",
+              startIndex: 4,
+              endIndex: 5
             },
             properties: {
               pixelSize: 350
             },
             fields: "pixelSize"
+          }
+        },  {
+          updateDimensionProperties: {
+            range: {
+              sheetId: sheetId,
+              dimension: "COLUMNS",
+              startIndex: 5,
+              endIndex: 6
+            },
+            properties: {
+              pixelSize: 550
+            },
+            fields: "pixelSize"
+          }
+        }, {
+          repeatCell: {
+            range: {
+              sheetId: sheetId,
+              startRowIndex: 0,
+              endRowIndex: 1,
+              startColumnIndex: 8,
+              endColumnIndex: 9
+            },
+            cell: {
+              userEnteredValue: {
+                  formulaValue: '=QUERY(A2:B;"select A, sum(B), count(B) group by A")'
+              }
+            },
+            fields: "userEnteredValue"
           }
         }
       ]
@@ -149,11 +191,11 @@ module.exports = {
         return;
       } else {
         let params = {
-          range: sheetName + '' + "!A1:C2",
-          values: [["Nome Operatore", "Tempo in Sec", "Nome della card"], oldReq.values[0]]
+          range: sheetName + '' + "!A1:F2",
+          values: [["Nome Operatore", "Tempo in Sec", "Data Inizio", "Data Fine", "Nome della card", "Link Carta"], oldReq.values[0]]
         }
         this.append(params);
-        this.batchUpdate(response.replies[0].addSheet.properties.sheetId);
+        this.batchUpdate(response.replies[0].addSheet.properties.sheetId, sheetName);
       }
     });
   }
