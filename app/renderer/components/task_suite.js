@@ -16,7 +16,7 @@ module.exports = {
     template: `
         <div v-bind:id="id" class="suite-tab">
             <ul class="collapsible" data-collapsible="accordion">
-                <template v-for="(task,i) in suite.tasks">
+                <template v-if="index === AppStatus.activeSuite" v-for="(task,i) in suite.tasks">
                     <task-card v-bind:task="task" v-on:remove="removeTask(i)" v-on:edit="editTask(i, $event)" v-bind:event="event"></task-card>
                 </template>
             </ul>

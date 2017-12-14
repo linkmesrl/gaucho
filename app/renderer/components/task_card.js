@@ -48,10 +48,6 @@ module.exports = {
         </div>
   </li>
   `,
-    mounted: function () {
-        this.event.on("run", this.run);
-        this.event.on("stop", this.stop);
-    },
     beforeDestroy() {
         this.removeListeners();
     },
