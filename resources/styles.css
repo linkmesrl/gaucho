@@ -95,6 +95,20 @@
     margin-bottom: 0;
 }
 
+.run-card .collapsible-header div .save-button{
+    padding: 0 .5rem;
+}
+
+.run-card .collapsible-header div .cancel-button{
+    background: #d9525d;
+    padding: 0 .5rem;
+}
+
+.run-card .collapsible-header div .save-button i,
+.run-card .collapsible-header div .cancel-button i{
+    margin: 0;
+}
+
 @media (max-width: 280px) {
     .brand-logo.main-logo>a {
         display: none !important;

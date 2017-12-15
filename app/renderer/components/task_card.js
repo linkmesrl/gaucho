@@ -27,7 +27,8 @@ module.exports = {
                 </div>
             </div>
             <div class="col s3">
-                <a v-if="task.editTimer" class="waves-effect waves-light btn save-button" v-on:click="editTimer">Save</a>
+                <a v-if="task.editTimer" class="waves-effect waves-light btn save-button" v-on:click="editTimer"><i class="material-icons unselectable-text">done</i></a>
+                <a v-if="task.editTimer" class="waves-effect waves-light btn cancel-button" v-on:click="toggleTimerEdit"><i class="material-icons unselectable-text">close</i></a>
                 <a v-if="!task.editTimer" class="waves-effect waves-light btn run-button col s9" v-on:click="toggleRun">{{running? "Stop" : "Run"}}</a>
                 <a v-if="!task.editTimer && !running" v-on:click="toggleTimerEdit" class="edit-button col s3"><i class="material-icons unselectable-text">mode_edit</i></a>                
             </div>
@@ -59,7 +60,7 @@ module.exports = {
         },
         toggleTimerEdit(ev) {
             ev.stopPropagation();
-            this.task.editTimer = true;
+            this.task.editTimer = !this.task.editTimer;
             if(!this.task.executionTimeEditFirst && !this.task.executionTimeEditSecond) {
                 let time = Utils.generateTimeString(this.task.elapsedTime);
                 this.task.executionTimeEditFirst = time.substring(0, time.indexOf(':'));
