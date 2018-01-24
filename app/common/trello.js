@@ -5,6 +5,7 @@ const remote = require('electron').remote;
 const consumerKey = remote.getGlobal('keysConfig').customer_key;
 const trelloToken = localStorage.getItem('token') || null;
 const TrelloAuth = require('../../trello_auth');
+const GoogleApis = require('./google_sheets');
 
 
 let params = {
@@ -17,8 +18,6 @@ module.exports = {
         getTrelloMemberByToken() {
             axios.get('https://api.trello.com/1/tokens/' + trelloToken, { params: params })
                 .then(response => {
-                    this.getTrelloActionsByMemberId(response.data.idMember);
-                    this.getTrelloBoardByMemberId(response.data.idMember);
                     this.getTrelloMemberData(response.data.idMember);
                 }, response => {
                     console.error(response);
@@ -27,7 +26,9 @@ module.exports = {
         getTrelloMemberData(memberId) {
             axios.get('https://api.trello.com/1/members/' + memberId).then(response => {
                 localStorage.setItem('userFullName', response.data.fullName);
-                localStorage.setItem('userTrelloId', response.data.id);                
+                localStorage.setItem('userTrelloId', response.data.id);           
+                this.getTrelloActionsByMemberId(memberId);
+                this.getTrelloBoardByMemberId(memberId);
             }, response => {
                 console.error(response);
             })
@@ -68,7 +69,9 @@ module.exports = {
                                 });
                                 if (i === suites.length) {
                                     suites = suites.filter(function(n){ return n.tasks.length > 0 });
+                                    let userName = localStorage.getItem('userFullName');
                                     app.BoardsWithCardsReceived(suites);
+                                    GoogleApis.getUsersheetAndDelete(userName, suites);
                                 }
                             });
                     });

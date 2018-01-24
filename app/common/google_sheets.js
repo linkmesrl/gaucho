@@ -18,6 +18,38 @@ module.exports = {
   init() {
     return jwtClient.authorizeAsync();
   },
+
+  getUsersheetAndDelete(sheetName, projects) {
+    let params = {};
+    params.spreadsheetId = spreadsheetId;
+    params.auth = jwtClient;
+    sheetsClient.get(params, (err, response) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      let myDocument = response.sheets.find(s => s.properties.title === sheetName);
+      let req = {
+        requests: [
+          {
+            deleteSheet: {
+              sheetId: myDocument.properties.sheetId
+            }
+          }
+        ]
+      };
+      params.resource = req;
+      params.spreadsheetId = spreadsheetId;
+      params.auth = jwtClient;
+      sheetsClient.batchUpdate(params, (err, response) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        this.createUserSheet(sheetName, projects);
+      });
+    });
+  },
   // GET RANGE PARAMS EXAMPLE
   // let params = { range: 'B2' };
   getRange(params) {
@@ -178,7 +210,33 @@ module.exports = {
   },
   // ADDSHEET PARAMS EXAMPLES
   // sheetName = string && oldReq = append params or 
-  addSheet(sheetName, oldReq) {
+  addSheet(sheetName, oldReq, params) {
+    sheetsClient.batchUpdate({
+      auth: jwtClient,
+      spreadsheetId: spreadsheetId,
+      resource: {
+        requests: [{ addSheet: { properties: { title: sheetName } } }],
+      }
+    }, (err, response) => {
+      if (err) {
+        console.log('The API returned an error: ' + err);
+        return;
+      } else {
+        if(params) {
+          let params = params;
+        } else {
+          let params = {
+            range: sheetName + '' + "!A1:F2",
+            values: [["Nome Operatore", "Tempo in Sec", "Data Inizio", "Data Fine", "Nome della card", "Link Carta"], oldReq.values[0]]
+          }
+        }
+        this.append(params);
+        this.batchUpdate(response.replies[0].addSheet.properties.sheetId, sheetName);
+      }
+    });
+  },
+
+  createUserSheet(sheetName, projects) {
     sheetsClient.batchUpdate({
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
@@ -191,12 +249,106 @@ module.exports = {
         return;
       } else {
         let params = {
-          range: sheetName + '' + "!A1:F2",
-          values: [["Nome Operatore", "Tempo in Sec", "Data Inizio", "Data Fine", "Nome della card", "Link Carta"], oldReq.values[0]]
+          range: sheetName + '' + "!A1:D2",
+          values: [["Nome Progetto", "Nome operatore", "secondi lavorati", "Counter"]]
         }
         this.append(params);
-        this.batchUpdate(response.replies[0].addSheet.properties.sheetId, sheetName);
+        this.batchUpdateUserSheet(response.replies[0].addSheet.properties.sheetId, projects, sheetName);
       }
+    });
+  },
+
+  batchUpdateUserSheet(sheetId, projects, userName) {
+    let params = {};
+    let requests = [];
+    projects.forEach((v, i) => {
+      let title = {
+        repeatCell: {
+          range: {
+            sheetId: sheetId,
+            startRowIndex: i + 1,
+            endRowIndex: i + 2,
+            startColumnIndex: 0,
+            endColumnIndex: 1
+          },
+          cell: {
+            userEnteredValue: {
+                stringValue: v.name
+            }
+          },
+          fields: "userEnteredValue"
+        }
+      }
+      requests.push(title);
+      let body = {
+        repeatCell: {
+          range: {
+            sheetId: sheetId,
+            startRowIndex: i + 1,
+            endRowIndex: i + 2,
+            startColumnIndex: 1,
+            endColumnIndex: 2
+          },
+          cell: {
+            userEnteredValue: {
+                formulaValue: '=QUERY(INDIRETTO("' + v.name + '!$A2:B");"select A, sum(B), count(B) where A=' + "'" + userName + "'" + ' group by A LIMIT 2 label sum(B) ' + "''" + ', count(B) '+ "''" +'")'
+            }
+          },
+          fields: "userEnteredValue"
+        }
+      }
+      requests.push(body);
+    });
+
+    let style = {
+      updateDimensionProperties: {
+        repeatCell: {
+          range: {
+            sheetId: sheetId,
+            startRowIndex: 0,
+            endRowIndex: 1
+          },
+          cell: {
+            userEnteredFormat: {
+              horizontalAlignment: "CENTER",
+              textFormat: {
+                fontSize: 10,
+                bold: true
+              }
+            }
+          },
+          fields: "userEnteredFormat(textFormat,horizontalAlignment)"
+        }
+      }
+    };
+    requests.push(style);
+
+    let dimesions = {
+      updateDimensionProperties: {
+        range: {
+          sheetId: sheetId,
+          dimension: "COLUMNS",
+          startIndex: 0,
+          endIndex: 1
+        },
+        properties: {
+          pixelSize: 350
+        },
+        fields: "pixelSize"
+      }
+    };
+    requests.push(dimesions);
+    params.resource = {};
+    params.resource.requests = requests;
+    params.spreadsheetId = spreadsheetId;
+    params.auth = jwtClient;
+
+    sheetsClient.batchUpdate(params, (err, response) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log(response);
     });
   }
 };
