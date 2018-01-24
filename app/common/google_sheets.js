@@ -29,25 +29,29 @@ module.exports = {
         return;
       }
       let myDocument = response.sheets.find(s => s.properties.title === sheetName);
-      let req = {
-        requests: [
-          {
-            deleteSheet: {
-              sheetId: myDocument.properties.sheetId
+      if(myDocument) {
+        let req = {
+          requests: [
+            {
+              deleteSheet: {
+                sheetId: myDocument.properties.sheetId
+              }
             }
+          ]
+        };
+        params.resource = req;
+        params.spreadsheetId = spreadsheetId;
+        params.auth = jwtClient;
+        sheetsClient.batchUpdate(params, (err, response) => {
+          if (err) {
+            console.error(err);
+            return;
           }
-        ]
-      };
-      params.resource = req;
-      params.spreadsheetId = spreadsheetId;
-      params.auth = jwtClient;
-      sheetsClient.batchUpdate(params, (err, response) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
+          this.createUserSheet(sheetName, projects);
+        });
+      } else {
         this.createUserSheet(sheetName, projects);
-      });
+      }
     });
   },
   // GET RANGE PARAMS EXAMPLE
