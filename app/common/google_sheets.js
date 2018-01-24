@@ -250,7 +250,7 @@ module.exports = {
       } else {
         let params = {
           range: sheetName + '' + "!A1:D2",
-          values: [["Nome Progetto", "Nome operatore", "secondi lavorati", "Counter"]]
+          values: [["Nome Progetto", "Nome operatore", "Tempo(sec)", "Counter"]]
         }
         this.append(params);
         this.batchUpdateUserSheet(response.replies[0].addSheet.properties.sheetId, projects, sheetName);
@@ -301,24 +301,21 @@ module.exports = {
     });
 
     let style = {
-      updateDimensionProperties: {
-        repeatCell: {
-          range: {
-            sheetId: sheetId,
-            startRowIndex: 0,
-            endRowIndex: 1
-          },
-          cell: {
-            userEnteredFormat: {
-              horizontalAlignment: "CENTER",
-              textFormat: {
-                fontSize: 10,
-                bold: true
-              }
+      repeatCell: {
+        range: {
+          sheetId: sheetId,
+          startRowIndex: 0,
+          endRowIndex: 1
+        },
+        cell: {
+          userEnteredFormat: {
+            horizontalAlignment: "CENTER",
+            textFormat: {
+              bold: true
             }
-          },
-          fields: "userEnteredFormat(textFormat,horizontalAlignment)"
-        }
+          }
+        },
+        fields: "userEnteredFormat(textFormat,horizontalAlignment)"
       }
     };
     requests.push(style);
